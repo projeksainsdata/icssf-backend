@@ -1,6 +1,7 @@
 import express from "express";
 import AuthController from "../controllers/auth.controller.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
+
 export default function () {
   const router = express.Router();
   const controller = new AuthController();
@@ -19,7 +20,7 @@ export default function () {
 
   router.post("/resend-email", [authMiddleware], controller.resendEmail);
 
-  router.get("/confirm-email/:token", controller.confirmEmail);
+  router.post("/confirm-email/:token", controller.confirmEmail);
 
   router.post("/logout", [authMiddleware], controller.logout);
 

@@ -7,9 +7,7 @@ export default class UserService {
     try {
       // create user in db and select only email and name fields
       const newUser = await UserModel.create({
-        email: user.email,
-        password: user.password,
-        username: user.username,
+        ...user,
       });
       // return only email and name fields
       return {
@@ -67,6 +65,46 @@ export default class UserService {
         { password },
         { new: true }
       );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // search users
+  async searchUsers(query) {
+    try {
+      const { page, perPage, ...searchQuery } = query;
+      const users = await UserModel.find(searchQuery)
+        .skip((page - 1) * perPage)
+        .limit(perPage);
+      return users;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // update user
+  async updateUser(userId, user) {
+    try {
+      return await UserModel.findByIdAndUpdate(userId, user, { new: true });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // count search users
+  async countSearchUsers(query) {
+    try {
+      return await UserModel.countDocuments(query);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // delete user
+  async deleteUser(userId) {
+    try {
+      return await UserModel.findByIdAndDelete(userId);
     } catch (error) {
       throw error;
     }

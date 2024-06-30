@@ -27,12 +27,8 @@ export default function connection(mongoose, config, options) {
   });
 
   mongoose.connection.on("disconnected", () => {
-    console.error(
-      `MongoDB disconnected! Reconnecting in ${
-        options.reconnectInterval / 1000
-      }s...`
-    );
-    setTimeout(() => connectToMongo(), options.reconnectInterval);
+    console.error(`MongoDB disconnected! Reconnecting in ${1000 / 1000}s...`);
+    setTimeout(() => connectToMongo(), 1000);
   });
 
   return {

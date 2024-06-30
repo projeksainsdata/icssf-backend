@@ -1,5 +1,5 @@
-import logger from '../application/logger.js';
-import uuid from '../utils/uuid.js';
+import logger from "../application/logger.js";
+import uuid from "../utils/uuid.js";
 export default class ResponseError extends Error {
   constructor(message, status = 500) {
     super(message);
@@ -62,10 +62,10 @@ export default class ResponseError extends Error {
 
   toJson() {
     return {
+      requestTime: this.requestTime,
+      requestId: this.requestId,
       status: this.status,
       message: this.message,
-      requestTime: this.requestTime,
-      requestId: this.requestId
     };
   }
 }

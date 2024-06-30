@@ -21,8 +21,11 @@ app.use("/uploads", express.static("./public/uploads"));
 configServer(app, mongoose, server, config).startServer();
 
 connectionDb(mongoose, config, {
-  autoIndex: false,
+  autoIndex: true,
   connectTimeoutMS: 1000,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  family: 4,
 }).connectToMongo();
 routesApp(app);
 

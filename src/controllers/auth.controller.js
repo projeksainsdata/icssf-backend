@@ -25,7 +25,6 @@ export default class AuthController {
       if (error) {
         throw new ResponseError(error.message, 400);
       }
-
       // check if user already exists
       const user = await this.userService.findByEmailLogin(value.email);
       if (user.length) {

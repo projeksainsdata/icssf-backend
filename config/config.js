@@ -16,7 +16,7 @@ export default {
     refreshExpiration: process.env.JWT_REFRESH_EXPIRATION || 604800000,
   },
 
-  frontendURL: process.env.FRONTURL || "http://localhost:3000",
+  frontendURL: process.env.FRONTURL || "http://localhost:5173",
   email: {
     user: process.env.EMAIL_USER || "test@gmail.com",
     pass: process.env.EMAIL_PASS || "123456",
@@ -64,5 +64,9 @@ export default {
       maxsize: 10485760,
       maxFiles: 5,
     },
+  },
+  copyleaks: {
+    COPYLEAKS_EMAIL: process.env.COPYLEAKS_EMAIL,
+    COPYLEAKS_API_KEY: process.env.COPYLEAKS_API_KEY,
   },
 };

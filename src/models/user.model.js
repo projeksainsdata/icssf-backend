@@ -45,7 +45,7 @@ const UserSchema = new Schema(
     fullname: {
       type: String,
       lowercase: true,
-      required: false,
+      required: true,
       minlength: [3, "fullname must be 3 letters long"],
     },
     email: {
@@ -58,7 +58,7 @@ const UserSchema = new Schema(
     username: {
       type: String,
       minlength: [3, "Username must be 3 letters long"],
-      unique: true,
+      required: false,
     },
     bio: {
       type: String,
