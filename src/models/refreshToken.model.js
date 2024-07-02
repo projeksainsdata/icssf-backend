@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import uuidV4 from "../utils/uuid.js";
 import dateExpired from "../helpers/dateExpired.js";
+import config from "../../config/config.js";
 
-const config = process.env;
 
 // this is the refresh token model for refresh token jwt token
 const RefreshTokenSchema = new mongoose.Schema({
@@ -13,12 +13,12 @@ const RefreshTokenSchema = new mongoose.Schema({
   },
   expiryDate: {
     type: Date,
-    expires: Number(config.jwtRefreshExpiration) / 1000,
+    expires: Number(config.jwt.refreshExpiration) / 1000,
   },
 });
 
 RefreshTokenSchema.statics.createToken = async function (user_id) {
-  let expiredAt = new Date(dateExpired(Number(config.jwtRefreshExpiration)));
+  let expiredAt = new Date(dateExpired(Number(config.jwt.refreshExpiration)));
   let _token = uuidV4();
 
   let _object = new this({
