@@ -5,7 +5,7 @@ export default {
   port: process.env.PORT || 8000,
   ip: process.env.HOST || "0.0.0.0",
   mongo: {
-    uri: process.env.MONGO_URL || "mongodb://localhost:27017/icssf_test",
+    uri: process.env.MONGO_URL || "mongodb+srv://icssf:icssf2024@cluster0.5apsisi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
     // poll
     poolSize: process.env.MONGO_POOL_SIZE || 10,
   },
@@ -16,7 +16,7 @@ export default {
     refreshExpiration: process.env.JWT_REFRESH_EXPIRATION || 604800000,
   },
 
-  frontendURL: process.env.FRONTURL || "http://localhost:3000",
+  frontendURL: process.env.FRONTURL || "http://localhost:5173",
   email: {
     user: process.env.EMAIL_USER || "test@gmail.com",
     pass: process.env.EMAIL_PASS || "123456",

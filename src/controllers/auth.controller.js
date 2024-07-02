@@ -72,6 +72,7 @@ export default class AuthController {
       const tokens = await this.services.createAccessAndRefreshToken({
         user: {
           _id: user[0]._id,
+          fullname: user[0].fullname,
           email: user[0].email,
           username: user[0].username,
           role: user[0].role,
