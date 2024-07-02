@@ -5,7 +5,7 @@ export default {
   port: process.env.PORT || 8000,
   ip: process.env.HOST || "0.0.0.0",
   mongo: {
-    uri: process.env.MONGO_URI,
+    uri: process.env.MONGO_URI || "mongodb://localhost:27017/icssf_test",
     // poll
     poolSize: process.env.MONGO_POOL_SIZE || 10,
   },
@@ -20,8 +20,8 @@ export default {
   email: {
     user: process.env.EMAIL_USER || "test@gmail.com",
     pass: process.env.EMAIL_PASS || "123456",
-    verifyUrl:
-      process.env.VERIFY_URL || "http://localhost:8000/api/confirm-email",
+    verifyUrl: process.env.VERIFY_URL || "http://localhost:5173/confirm-email",
+    reseturl: process.env.RESET_URL || "http://localhost:5173/reset-password",
   },
 
   bcrypt: {

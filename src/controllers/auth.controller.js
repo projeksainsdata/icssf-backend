@@ -5,7 +5,7 @@ import ResponseApi from "../responses/api.response.js";
 import * as validate from "../validate/user.validate.js";
 import nodemailer from "nodemailer";
 import config from "../../config/config.js";
-import emailVerifyTemplate from "../helpers/emailVerify.js";
+import emailVerifyTemplate from "../helpers/emailTemplate.js";
 
 export default class AuthController {
   services = new AuthService();
@@ -146,30 +146,9 @@ export default class AuthController {
         to: user.email,
         subject:
           "Email Verification | ICSSF Institute Technology Sumatera 2024",
-        html: emailVerifyTemplate(user.email, link, "Email"),
+        html: emailVerifyTemplate(user.email, link, "email"),
       });
-      return ResponseApi.noContent(res);
-    } catch (error) {
-      next(error);
-    }
-  };
 
-  // verify email
-  verifyEmail = async (req, res, next) => {
-    try {
-      const { token } = req.params;
-      if (!token) {
-        throw new ResponseError("Token is required", 400);
-      }
-
-      // get email verify token
-      const emailVerify = await this.services.getEmailVerifyToken(token);
-      if (!emailVerify) {
-        throw new ResponseError("Invalid token", 400);
-      }
-
-      // update verification status
-      await this.userService.updateVerificationStatus(emailVerify.user_id);
       return ResponseApi.noContent(res);
     } catch (error) {
       next(error);
@@ -196,13 +175,12 @@ export default class AuthController {
       );
       // send email
 
-      const link = `${config.email.resetUrl}/${resetToken}`;
-
+      const link = `${config.email.reseturl}?token=${resetToken}`;
       await this.transporter.sendMail({
         from: config.email.user,
         to: user[0].email,
         subject: "Reset Password",
-        html: emailVerifyTemplate(user[0].email, link, "Reset Password"),
+        html: emailVerifyTemplate(user[0].email, link, "Reset"),
       });
       return ResponseApi.noContent(res);
     } catch (error) {
@@ -213,17 +191,24 @@ export default class AuthController {
   // reset password
   resetPassword = async (req, res, next) => {
     try {
-      const { token } = req.params;
-      const { password } = req.body;
+      const { password, password2, token } = req.body;
+
       if (!token) {
         throw new ResponseError("Token is required", 400);
       }
-      if (!password) {
+      if (!password || !password2) {
         throw new ResponseError("Password is required", 400);
       }
 
+      // check if password match
+      if (password !== password2) {
+        throw new ResponseError("Password do not match", 400);
+      }
+
       // get reset token
-      const resetToken = await this.services.getResetToken(token);
+      const resetToken = await this.services.getAndVerifyResetPasswordToken(
+        token
+      );
       if (!resetToken) {
         throw new ResponseError("Invalid token", 400);
       }
@@ -234,9 +219,9 @@ export default class AuthController {
       await this.userService.updatePassword(resetToken.user_id, hashedPassword);
 
       // delete reset token
-      await this.services.deleteResetToken(token);
+      await this.services.deleteResetPasswordToken(token);
       // redirect to frontend
-      return ResponseApi.success(res, { message: "Password updated" });
+      return ResponseApi.success(res, { message: "PasswPord updated" });
     } catch (error) {
       next(error);
     }
@@ -256,7 +241,7 @@ export default class AuthController {
         to: user.email,
         subject:
           "Email Verification | ICSSF Institute Technology Sumatera 2024",
-        html: emailVerifyTemplate(user.email, link, "Email"),
+        html: emailVerifyTemplate(user.email, link, "email"),
       });
       return ResponseApi.noContent(res);
     } catch (error) {
@@ -271,23 +256,43 @@ export default class AuthController {
       if (!token) {
         throw new ResponseError("Token is required", 400);
       }
-
       // get email verify token
-      const emailVerify = await this.services.getEmailVerifyToken(token);
+      const emailVerify = await this.services.getAndVerifyEmailVerifyToken(
+        token
+      );
       if (!emailVerify) {
         throw new ResponseError("Invalid token", 400);
       }
+      // get user by id
+      const user = await this.userService.findById(emailVerify.user_id);
 
+      // check if user is already verified
+      if (user.isVerified) {
+        throw new ResponseError("Email is already verified", 400);
+      }
       // update verification status
-      await this.userService.updateVerificationStatus(
+      const newUser = await this.userService.updateVerificationStatus(
         emailVerify.user_id,
         true
       );
 
+      // craete access and refresh token
+
+      const tokens = await this.services.createAccessAndRefreshToken({
+        user: {
+          _id: newUser._id,
+          email: newUser.email,
+          username: newUser.username,
+          role: newUser.role,
+          isVerified: newUser.isVerified,
+          profile_img: newUser.profile_img,
+        },
+      });
+
       // delete email verify token
       await this.services.deleteEmailVerifyToken(token);
       // redirect to frontend
-      return ResponseApi.success(res, { message: "Email verified" });
+      return ResponseApi.success(res, { tokens });
     } catch (error) {
       next(error);
     }

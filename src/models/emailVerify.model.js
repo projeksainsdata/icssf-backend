@@ -17,9 +17,9 @@ const EmailVerifySchema = new Schema(
     },
     expires: {
       type: Date,
-      // 1h
-      default: Date.now() + 60 * 60 * 1000,
-      index: { expires: "1h" },
+      // 2 hours from now in date
+      default: Date.now() + 60 * 60 * 1000 * 2,
+      index: { expires: "2h" },
     },
   },
   { timestamps: true }
@@ -37,11 +37,11 @@ EmailVerifySchema.statics.createToken = async function (user_id) {
 EmailVerifySchema.statics.verifyExpiration = (token) => {
   return token.expires < new Date().getTime();
 };
-// auto delete token when expire with expireAfterSeconds
-EmailVerifySchema.index({ createdAt: 1 }, { expireAfterSeconds: 0 });
 // create index token
 EmailVerifySchema.index({ token: 1 });
 
 const EmailVerify = mongoose.model("EmailVerify", EmailVerifySchema);
+
+EmailVerify.createIndexes();
 
 export default EmailVerify;

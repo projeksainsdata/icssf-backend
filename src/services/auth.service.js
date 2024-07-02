@@ -5,7 +5,6 @@ import EmailVerify from "../models/emailVerify.model.js";
 import ResetPassword from "../models/resetPassword.model.js";
 import config from "../../config/config.js";
 import ResponeError from "../responses/error.response.js";
-
 export default class AuthService {
   // generate token
   generateToken(payload) {
@@ -44,7 +43,7 @@ export default class AuthService {
   async verifyOrDeleteRefreshToken(refreshToken) {
     if (RefreshToken.verifyExpiration(refreshToken)) {
       await RefreshToken.deleteOne({ token: refreshToken.token });
-      throw new ResponeError(401, "Refresh token expired");
+      throw new ResponeError("Refresh token expired", 400);
     } else {
       return refreshToken;
     }
@@ -79,6 +78,18 @@ export default class AuthService {
   async getEmailVerifyToken(token) {
     return EmailVerify.findOne({ token });
   }
+  // get and verify email verify token
+  async getAndVerifyEmailVerifyToken(token) {
+    try {
+      const emailVerifyToken = await this.getEmailVerifyToken(token);
+      if (!emailVerifyToken) {
+        throw new ResponeError("Invalid token", 400);
+      }
+      return this.verifyEmailVerifyToken(emailVerifyToken);
+    } catch (e) {
+      throw e;
+    }
+  }
 
   // delete email verify token
   async deleteEmailVerifyToken(token) {
@@ -89,7 +100,7 @@ export default class AuthService {
   async verifyEmailVerifyToken(emailVerifyToken) {
     if (EmailVerify.verifyExpiration(emailVerifyToken)) {
       await EmailVerify.deleteOne({ token: emailVerifyToken.token });
-      throw new ResponeError(401, "Email verify token expired");
+      throw new ResponeError("Email verify token expired", 400);
     } else {
       return emailVerifyToken;
     }
@@ -102,6 +113,19 @@ export default class AuthService {
   // get reset password token
   async getResetPasswordToken(token) {
     return ResetPassword.findOne({ token });
+  }
+
+  // get and verify reset password token
+  async getAndVerifyResetPasswordToken(token) {
+    try {
+      const resetToken = await this.getResetPasswordToken(token);
+      if (!resetToken) {
+        throw new ResponeError("Invalid token", 400);
+      }
+      return this.verifyResetPasswordToken(resetToken);
+    } catch (e) {
+      throw e;
+    }
   }
 
   // create reset password token
@@ -120,7 +144,7 @@ export default class AuthService {
   async verifyResetPasswordToken(resetPasswordToken) {
     if (ResetPassword.verifyExpiration(resetPasswordToken)) {
       await ResetPassword.deleteOne({ token: resetPasswordToken.token });
-      throw new ResponeError(401, "Reset password token expired");
+      throw new ResponeError("Reset password token expired", 401);
     } else {
       return resetPasswordToken;
     }

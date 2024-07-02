@@ -133,8 +133,6 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <tbody>
     <tr>
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:30px 10px 31px;font-family:'Montserrat',sans-serif;" align="left">
-
-
       </td>
     </tr>
   </tbody>
@@ -169,7 +167,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:50px 10px 30px;font-family:'Montserrat',sans-serif;" align="left">
         
   <!--[if mso]><table width="100%"><tr><td><![endif]-->
-    <h1 class="v-text-align v-font-size" style="margin: 0px; color: #27187e; line-height: 140%; text-align: center; word-wrap: break-word; font-family: 'Montserrat',sans-serif; font-size: 36px; font-weight: 400;"><strong>Verify Your ${type}</strong></h1>
+    <h1 class="v-text-align v-font-size" style="margin: 0px; color: #27187e; line-height: 140%; text-align: center; word-wrap: break-word; font-family: 'Montserrat',sans-serif; font-size: 36px; font-weight: 400;"><strong>${type === "email"? "Verify You" : "Reset Password"} Email</strong></h1>
   <!--[if mso]></td></tr></table><![endif]-->
 
       </td>
@@ -220,35 +218,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <div style="height: 100%;width: 100% !important;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
   <!--[if (!mso)&(!IE)]><!--><div style="box-sizing: border-box; height: 100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"><!--<![endif]-->
   
-<table id="u_content_text_5" style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:40px 30px 20px 40px;font-family:'Montserrat',sans-serif;" align="left">
-        
-  <div class="v-text-align v-font-size" style="font-size: 14px; color: #4b4a4a; line-height: 190%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 190%;"><span style="font-size: 18px; line-height: 34.2px;"><strong><span style="line-height: 34.2px; font-size: 18px;">Dear ${email},</span></strong></span></p>
-<p style="font-size: 14px; line-height: 190%;"><span style="font-size: 16px; line-height: 30.4px;">We have successfully Send you Link To Verify your Email Click Bellow or ${link}</span></p>
-  </div>
-
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-  </div>
-</div>
-<!--[if (mso)|(IE)]></td><![endif]-->
-      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
-    </div>
-  </div>
-  </div>
-  
-
-
-  
-  
-<div class="u-row-container" style="padding: 0px;background-color: transparent">
+  <div class="u-row-container" style="padding: 0px;background-color: transparent">
   <div class="u-row" style="margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: #ffffff;">
     <div style="border-collapse: collapse;display: table;width: 100%;height: 100%;background-color: transparent;">
       <!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding: 0px;background-color: transparent;" align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:600px;"><tr style="background-color: #ffffff;"><![endif]-->
@@ -280,6 +250,37 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
   </div>
 </div>
+<table id="u_content_text_5" style="font-family:'Montserrat',sans-serif;" role="presentation" cellpadding="0" cellspacing="0" width="100%" border="0">
+  <tbody>
+    <tr>
+      <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:40px 30px 20px 40px;font-family:'Montserrat',sans-serif;" align="left">
+        
+  <div class="v-text-align v-font-size" style="font-size: 14px; color: #4b4a4a; line-height: 190%; text-align: left; word-wrap: break-word;">
+    <p style="font-size: 14px; line-height: 190%;"><span style="font-size: 18px; line-height: 34.2px;"><strong><span style="line-height: 34.2px; font-size: 18px;">Dear ${email},</span></strong></span></p>
+<p style="font-size: 14px; line-height: 190%;"><span style="font-size: 16px; line-height: 30.4px;">We have successfully Send you Link To ${
+    type == "email" ? "Verify" : "Reset Password"
+  } your Email Click Bellow or ${link}</span></p>
+  </div>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
+  </div>
+</div>
+<!--[if (mso)|(IE)]></td><![endif]-->
+      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+    </div>
+  </div>
+  </div>
+  
+
+
+  
+  
+
 <!--[if (mso)|(IE)]></td><![endif]-->
 <!--[if (mso)|(IE)]><td align="center" width="300" style="width: 300px;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid transparent;border-right: 0px solid transparent;border-bottom: 0px solid transparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;" valign="top"><![endif]-->
 <div class="u-col u-col-50" style="max-width: 320px;min-width: 300px;display: table-cell;vertical-align: top;">
