@@ -8,6 +8,13 @@ import routesApp from "./routers/index.js";
 
 import errorHandler from "./middlewares/error.middleware.js";
 import config from "../config/config.js";
+import webpush from "web-push";
+
+webpush.setVapidDetails(
+  `mailto:${config.email.user}`,
+  config.webpush.publicKey,
+  config.webpush.privateKey
+);
 
 const PORT = process.env.PORT || 8000;
 const app = express();

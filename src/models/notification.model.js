@@ -10,6 +10,10 @@ const NotificationSchema = new Schema(
       ref: "User",
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
     message: {
       type: String,
       required: true,
@@ -18,9 +22,9 @@ const NotificationSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    types: {
+    action: {
       type: String,
-      required: true,
+      default: null,
     },
   },
   { timestamps: true }

@@ -69,4 +69,13 @@ export default {
     COPYLEAKS_EMAIL: process.env.COPYLEAKS_EMAIL,
     COPYLEAKS_API_KEY: process.env.COPYLEAKS_API_KEY,
   },
+
+  webpush: {
+    publicKey:
+      process.env.VAPID_PUBLIC_KEY ||
+      "BF3D03v_4JWlCH4WdbfdRggMV12p_cfHhlvOs-FRi5Q2nLuqtK-zCbHCXd9MFw3fDJ891iHBeFGEwUeKVc2y_s8",
+    privateKey:
+      process.env.VAPID_PRIVATE_KEY ||
+      "U92-2yBtPM55_QPAmjRymecr7mfSVloR6b-dW0ILn1g",
+  },
 };
