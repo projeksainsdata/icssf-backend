@@ -12,11 +12,10 @@ export default {
 
   jwt: {
     secret: process.env.JWT_SECRET || "jkl!±@£!@ghj1237",
-    expiration: process.env.JWT_EXPIRATION || 7200000,
-    refreshExpiration: process.env.JWT_REFRESH_EXPIRATION || 604800000,
+    expiration: Number(process.env.JWT_EXPIRATION) || 7200000,
+    refreshExpiration: Number(process.env.JWT_REFRESH_EXPIRATION) || 604800000,
   },
-
-  frontendURL: process.env.FRONTURL || "http://localhost:5173",
+  frontendURL: process.env.FRONTENDURL || "http://localhost:5173",
   email: {
     user: process.env.EMAIL_USER || "test@gmail.com",
     pass: process.env.EMAIL_PASS || "123456",
@@ -25,7 +24,7 @@ export default {
   },
 
   bcrypt: {
-    saltRounds: process.env.SALT_ROUNDS || 10,
+    saltRounds: Number(process.env.SALT_ROUNDS) || 10,
   },
 
   cloudinary: {
@@ -40,29 +39,29 @@ export default {
     // logs/combined.log
     combined: {
       filename: process.env.LOG_COMBINED || "logs/combined.log",
-      maxsize: 10485760,
-      maxFiles: 3,
+      maxsize: Number(process.env.LOG_MAX_SIZE) ||10485760,
+      maxFiles: Number(process.env.LOG_COMBINED_FILES) || 5,
     },
 
     // logs/error.log
     error: {
       filename: process.env.LOG_ERROR || "logs/error.log",
-      maxsize: 10485760,
-      maxFiles: 5,
+      maxsize: process.env.LOG_ERROR_MAX_SIZE || 10485760,
+      maxFiles: process.env.LOG_ERROR_FILES || 5,
     },
 
     // logs/exceptions.log
     exceptions: {
       filename: process.env.LOG_EXCEPTIONS || "logs/exceptions.log",
-      maxsize: 10485760,
-      maxFiles: 5,
+      maxsize: process.env.LOG_EXCEPTIONS_MAX_SIZE || 10485760,
+      maxFiles: process.env.LOG_EXCEPTIONS_FILES || 5,
     },
 
     // logs/requests.log
     requests: {
       filename: process.env.LOG_REQUESTS || "logs/requests.log",
-      maxsize: 10485760,
-      maxFiles: 5,
+      maxsize: process.env.LOG_REQUESTS_MAX_SIZE || 10485760,
+      maxFiles: process.env.LOG_REQUESTS_FILES || 5,
     },
   },
   copyleaks: {
