@@ -16,16 +16,10 @@ webpush.setVapidDetails(
   config.webpush.privateKey
 );
 
-const PORT = process.env.PORT || 8000;
 const app = express();
 const server = http.createServer(app);
 
 configApp(app);
-app.use("/static", express.static("./public"));
-app.use("/images", express.static("./public/images"));
-app.use("/uploads", express.static("./public/uploads"));
-
-configServer(app, mongoose, server, config).startServer();
 
 connectionDb(mongoose, config, {
   autoIndex: true,
@@ -34,10 +28,15 @@ connectionDb(mongoose, config, {
   socketTimeoutMS: 45000,
   family: 4,
 }).connectToMongo();
+
 routesApp(app);
 
 app.use(errorHandler);
 
-server.listen(PORT, () => {
-  console.log("Server Running.....");
-});
+const serverInit = configServer(app, mongoose, server, config);
+
+if (process.env.NODE_ENV !== "test") {
+  serverInit.startServer();
+}
+
+export { app, mongoose, server, serverInit };

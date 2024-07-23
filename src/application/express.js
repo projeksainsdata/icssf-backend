@@ -6,6 +6,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import cookieParser from "cookie-parser";
+import config from "../../config/config.js";
 
 export default function expressConfig(app) {
   // setup express configuration here
@@ -15,9 +16,18 @@ export default function expressConfig(app) {
   app.use(express.urlencoded({ extended: true, limit: "50mb" }));
   app.use(express.static("public"));
   // setup session
+  if (config.env === "development") {
+    app.use(cors());
+  } else {
+    app.use(
+      cors({
+        origin: config.frontendURL,
+        credentials: true,
+      })
+    );
+  }
 
   // cors
-  app.use(cors());
   // helmet
   app.use(helmet({}));
   // rate limiter

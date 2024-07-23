@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default {
+  env: process.env.NODE_ENV || "development",
   port: process.env.PORT || 8000,
   ip: process.env.HOST || "0.0.0.0",
   mongo: {
@@ -39,7 +40,7 @@ export default {
     // logs/combined.log
     combined: {
       filename: process.env.LOG_COMBINED || "logs/combined.log",
-      maxsize: Number(process.env.LOG_MAX_SIZE) ||10485760,
+      maxsize: Number(process.env.LOG_MAX_SIZE) || 10485760,
       maxFiles: Number(process.env.LOG_COMBINED_FILES) || 5,
     },
 

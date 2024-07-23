@@ -65,10 +65,6 @@ class UserControllers {
       if (error) {
         throw new ResponseError(error.message, 400);
       }
-      // check if the user is updating his/her own profile
-      if (req.user._id !== req.params.id) {
-        throw new ResponseError("Unauthorized", 401);
-      }
 
       // check if the user is updating the password
       if (value.password) {
@@ -99,16 +95,11 @@ class UserControllers {
     }
   };
 
-  // update user by admin
-  updateUserByAdmin = async (req, res, next) => {
+  // get user by id
+  getUserById = async (req, res, next) => {
     try {
-      // validate the request body
-      const { value, error } = userValidate.updateUserSchema.validate(req.body);
-      if (error) {
-        throw new ResponseError(error.message, 400);
-      }
       // call the service
-      const user = await this.service.updateUser(req.params.id, value);
+      const user = await this.service.findById(req.params.id);
       // send the response
       return ResponseApi.success(res, user);
     } catch (error) {
@@ -116,11 +107,29 @@ class UserControllers {
     }
   };
 
-  // get user by id
-  getUserById = async (req, res, next) => {
+  getUserByUsername = async (req, res, next) => {
     try {
       // call the service
-      const user = await this.service.findById(req.params.id);
+      const user = await this.service.findByUsername(req.params.username);
+      // send the response
+      return ResponseApi.success(res, user);
+    } catch (error) {
+      return next(error);
+    }
+  };
+
+  updateUserByusername = async (req, res, next) => {
+    try {
+      // validate the request body
+      const { value, error } = userValidate.updateUserSchema.validate(req.body);
+      if (error) {
+        throw new ResponseError(error.message, 400);
+      }
+      // call the service
+      const user = await this.service.updateUserByUsername(
+        req.params.username,
+        value
+      );
       // send the response
       return ResponseApi.success(res, user);
     } catch (error) {

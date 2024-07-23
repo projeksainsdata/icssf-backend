@@ -19,6 +19,13 @@ export default class UserService {
     }
   }
 
+  async findByUsername(username) {
+    try {
+      return await UserModel.find({ username });
+    } catch (error) {
+      throw error;
+    }
+  }
   //   findById(id) {
   async findById(id) {
     try {

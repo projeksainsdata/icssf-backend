@@ -18,6 +18,22 @@ export default class AuthController {
     },
   });
 
+  generateUsername = async (email) => {
+    // LIKE DISCORD LOGIC TO GENERATE USERNAME
+    // USERNAME#XXXX
+    // USERNAME#0001
+    // USERNAME#0002
+
+    // get username from email
+    const username = email.split("@")[0];
+
+    const random = Math.floor(Math.random() * 9999)
+      .toString()
+      .padStart(5, "0");
+
+    return `${username}#${random}`;
+  };
+
   // register user
   register = async (req, res, next) => {
     try {
@@ -34,6 +50,8 @@ export default class AuthController {
       // hash password
       value.password = await this.services.hashPassword(value.password);
       // create user
+      value.username = await this.generateUsername(value.email);
+
       const newUser = await this.userService.createUser(value);
       return ResponseApi.success(res, newUser);
     } catch (error) {
@@ -109,6 +127,7 @@ export default class AuthController {
       const tokens = await this.services.createAccessAndRefreshToken({
         user: user,
       });
+
       return ResponseApi.success(res, tokens);
     } catch (error) {
       next(error);
@@ -174,7 +193,6 @@ export default class AuthController {
         user[0]._id
       );
       // send email
-
       const link = `${config.email.reseturl}?token=${resetToken}`;
       await this.transporter.sendMail({
         from: config.email.user,
@@ -182,6 +200,7 @@ export default class AuthController {
         subject: "Reset Password",
         html: emailVerifyTemplate(user[0].email, link, "Reset"),
       });
+
       return ResponseApi.noContent(res);
     } catch (error) {
       next(error);
@@ -221,7 +240,7 @@ export default class AuthController {
       // delete reset token
       await this.services.deleteResetPasswordToken(token);
       // redirect to frontend
-      return ResponseApi.success(res, { message: "PasswPord updated" });
+      return ResponseApi.success(res, { message: "password updated" });
     } catch (error) {
       next(error);
     }

@@ -28,3 +28,11 @@ dist/
 .env.test.local
 
 # IDE
+.idea
+.vscode
+
+# TEST jest
+coverage/
+jest.config.js
+jest.setup.js
+
